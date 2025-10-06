@@ -1,49 +1,96 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-router-dom";
-import Genres from "./components/Genres";
-import Directors from "./components/Directors";
-import Productions from "./components/Productions";
-import Types from "./components/Types";
-import Media from "./components/Media";
-
+import React, { useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Genero } from "./components/Genero";
+import { Director } from "./components/Director";
+import { Productora } from "./components/Productora";
+import { Tipo } from "./components/Tipo";
+import { Media } from "./components/Media";
+import fondo from "./assets/fondo.jpg"; 
 function App() {
-  return (
-    <Router>
-      
-      <nav className="navbar navbar-expand-lg navbar-dark px-4 py-3 fixed-top" style={{ backdropFilter: "blur(8px)", backgroundColor: "rgba(0,0,0,0.85)", boxShadow: "0 4px 12px rgba(0,0,0,0.4)" }}>
-        <Link className="navbar-brand d-flex align-items-center" to="/">
-          <i className="bi bi-film me-2"></i> MoviesApp
-        </Link>
-        <div className="d-flex">
-          <Link className="nav-link text-light me-3" to="/genres">
-            <i className="bi bi-collection-play me-1"></i> Géneros
-          </Link>
-          <Link className="nav-link text-light me-3" to="/directors">
-            <i className="bi bi-person-video2 me-1"></i> Directores
-          </Link>
-          <Link className="nav-link text-light me-3" to="/productions">
-            <i className="bi bi-building me-1"></i> Productoras
-          </Link>
-          <Link className="nav-link text-light me-3" to="/types">
-            <i className="bi bi-tags me-1"></i> Tipos
-          </Link>
-          <Link className="nav-link text-light" to="/media">
-            <i className="bi bi-play-circle me-1"></i> Media
-          </Link>
-        </div>
-      </nav>
+  const [modulo, setModulo] = useState("inicio");
 
-      <div className="container-fluid pt-5 mt-5">
-        <Routes>
-          <Route path="/" element={<Navigate to="/media" replace />} />
-          <Route path="/genres" element={<Genres />} />
-          <Route path="/directors" element={<Directors />} />
-          <Route path="/productions" element={<Productions />} />
-          <Route path="/types" element={<Types />} />
-          <Route path="/media" element={<Media />} />
-        </Routes>
+  const renderModulo = () => {
+    switch (modulo) {
+      case "genero":
+        return <Genero />;
+      case "director":
+        return <Director />;
+      case "productora":
+        return <Productora />;
+      case "tipo":
+        return <Tipo />;
+      case "media":
+        return <Media />;
+      default:
+        return (
+          <div className="text-center text-light mt-5">
+            <h1><i className="bi bi-film"></i> Movies Admin Panel</h1>
+            <p className="lead">Selecciona un módulo para comenzar</p>
+          </div>
+        );
+    }
+  };
+
+  return (
+    <div
+      style={{
+        backgroundImage: `url(${fondo})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed",
+        minHeight: "100vh",
+      }}
+    >
+      {/* Capa oscura encima del fondo */}
+      <div
+        style={{
+          backgroundColor: "rgba(0, 0, 0, 0.75)",
+          minHeight: "100vh",
+        }}
+      >
+        <div className="container py-5">
+          <nav className="navbar navbar-dark bg-dark rounded mb-4 px-3 shadow-lg">
+            <a className="navbar-brand fw-bold text-white" href="#">
+              🎬 MoviesApp
+            </a>
+            <div>
+              <button
+                className="btn btn-outline-light me-2"
+                onClick={() => setModulo("genero")}
+              >
+                Géneros
+              </button>
+              <button
+                className="btn btn-outline-light me-2"
+                onClick={() => setModulo("director")}
+              >
+                Directores
+              </button>
+              <button
+                className="btn btn-outline-light me-2"
+                onClick={() => setModulo("productora")}
+              >
+                Productoras
+              </button>
+              <button
+                className="btn btn-outline-light me-2"
+                onClick={() => setModulo("tipo")}
+              >
+                Tipos
+              </button>
+              <button
+                className="btn btn-outline-light"
+                onClick={() => setModulo("media")}
+              >
+                Media
+              </button>
+            </div>
+          </nav>
+
+          {renderModulo()}
+        </div>
       </div>
-    </Router>
+    </div>
   );
 }
 
